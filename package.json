@@ -1,5 +1,5 @@
 {
-  "name": "@kv/ts-boilerplate-code",
+  "name": "@react-table-library/table",
   "version": "0.1.0",
   "description": "Typescript Boilerplate code",
   "main": "build/index.js",
