@@ -26,13 +26,17 @@ const banner = `
 module.exports = {
   mode: "production",
   devtool: 'source-map',
-  entry: './src/lib/index.ts',
+  entry: './src/lib/index.tsx',
   output: {
     filename: 'index.js',
     path: path.resolve(__dirname, 'build'),
-    library: "MyLibrary",
-    libraryTarget: 'umd',
+    library: {
+      type: 'module'
+    },
     clean: true
+  },
+  experiments: {
+    outputModule: true
   },
   optimization: {
     minimize: true,
@@ -44,10 +48,13 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(m|j|t)s$/,
+        test: /\.(m|j|t)sx?$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'babel-loader'
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript']
+          }
         }
       },
       {
@@ -66,6 +73,6 @@ module.exports = {
     new webpack.BannerPlugin(banner)
   ],
   resolve: {
-    extensions: ['.ts', '.js', '.json']
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json']
   }
 };

@@ -38,6 +38,7 @@
     "@babel/plugin-transform-typescript": "^7.20.13",
     "@babel/polyfill": "^7.12.1",
     "@babel/preset-env": "^7.20.2",
+    "@babel/preset-react": "^7.26.3",
     "@storybook/addon-actions": "^6.5.16",
     "@storybook/addon-essentials": "^6.5.16",
     "@storybook/addon-interactions": "^6.5.16",
@@ -97,5 +98,10 @@
       "node"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/material": "^5.15.10"
+  }
 }

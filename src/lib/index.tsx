@@ -1,7 +1,14 @@
-import React from 'react';
-import "./index.css";
+import React, { useState } from "react";
+// import "./index.css";
 
-const MyLibrary = () => (
-  <div>Your component goes here</div>
-)
-export default MyLibrary;
+import GenericTable from "../table/table";
+
+export { GenericTable };
+export default GenericTable;
+
+// const MyLibrary = () => {
+//   const [data, setData] = useState([]);
+//   return <div>MyLibrary</div>;
+// };
+
+// export default MyLibrary;
