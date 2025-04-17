@@ -38,6 +38,10 @@ module.exports = {
   experiments: {
     outputModule: true
   },
+  externals: {
+    'react': 'react',
+    'react-dom': 'react-dom'
+  },
   optimization: {
     minimize: true,
     minimizer: [

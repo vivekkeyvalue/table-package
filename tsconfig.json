@@ -14,8 +14,9 @@
       "jsx": "react-jsx",
       "skipLibCheck": true,
       "esModuleInterop": true,
-      "resolveJsonModule": true
+      "resolveJsonModule": true,
+      "declarationDir": "build/types"
     },
-    "include": ["src/lib/**/*.tsx", "src/lib/**/*.ts"],
+    "include": ["src/lib/**/*.tsx", "src/lib/**/*.ts", "src/table/**/*.tsx", "src/table/**/*.ts"],
     "exclude": ["src/lib/**/tests", "node_modules"]
 }

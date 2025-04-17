@@ -1,10 +1,18 @@
 {
   "name": "@vivekthebassist/table",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "Typescript Boilerplate code",
   "main": "build/index.js",
-  "source": "src/index.ts",
-  "types": "build/types/index.d.ts",
+  "module": "build/index.js",
+  "types": "build/types/lib/index.d.ts",
+  "source": "src/lib/index.tsx",
+  "exports": {
+    ".": {
+      "import": "./build/index.js",
+      "require": "./build/index.js",
+      "types": "./build/types/lib/index.d.ts"
+    }
+  },
   "scripts": {
     "start": "webpack watch && tsc",
     "build": "webpack && tsc",
@@ -20,11 +28,11 @@
     "node": ">=10"
   },
   "repository": {
-    "type": "bitbucket",
-    "url": "https://bitbucket.org/keyvaluesoftwaresystems/kv-boilerplate-ts"
+    "type": "git",
+    "url": "git+https://github.com/vivekkeyvalue/table-package.git"
   },
   "author": "Keyvalue",
-  "license": "",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
@@ -69,7 +77,8 @@
     "webpack-dev-server": "4.11.1"
   },
   "peerDependencies": {
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "files": [
     "build"
