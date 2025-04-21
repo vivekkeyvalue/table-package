@@ -1,6 +1,6 @@
 {
   "name": "@vivekthebassist/table",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Typescript Boilerplate code",
   "main": "build/index.js",
   "module": "build/index.js",

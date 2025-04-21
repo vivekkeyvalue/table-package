@@ -9,65 +9,18 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
-export type Column<T> = {
-  key: keyof T;
-  label: string;
-  render?: (value: T[keyof T], row: T, level?: number) => ReactNode;
-  renderHeader?: (column: Column<T>) => ReactNode;
-};
-
-export type Row<T> = T & {
-  id: string;
-  children?: Row<T>[];
-  getChildren?: (rowId: string) => Row<T>[];
-};
-
-export type RowAction = {
-  label?: string;
-  icon?: string;
-  renderUpdateComponent?: any;
-  condition?: (rowId: string) => boolean;
-  action?: (rowId: string, el?: any) => void;
-  component?: ReactElement<{ onClick?: (e: React.MouseEvent) => void }>;
-};
-
-export type GenericTableProps<T> = {
-  data: Row<T>[];
-  columns: Column<T>[];
-  meta: any;
-  actions?: RowAction[];
-  onViewRow?: (row: Row<T>) => void;
-  isLoading?: boolean;
-  depth?: number | null;
-  showTotal?: boolean;
-  tableHeaderStyles?: React.CSSProperties;
-  tableCellStyles?: React.CSSProperties;
-  rowColors?: [string, string];
-};
-
-const DEFAULT_ROW_COLORS: [string, string] = ["#D8DBDD", "#F0F0F1"];
-
-const DEFAULT_TABLE_HEADER_STYLES: React.CSSProperties = {
-  padding: "0.75rem 0.5rem",
-  fontSize: "0.75rem",
-  fontWeight: 700,
-  lineHeight: "1rem",
-  color: "#F6F8F9",
-  borderLeft: "1px solid #737F86",
-  borderBottom: "none",
-  background: "#2F736E",
-};
-
-const DEFAULT_TABLE_CELL_STYLES: React.CSSProperties = {
-  padding: "0.75rem 0.5rem",
-  fontSize: "0.875rem",
-  fontWeight: 500,
-  lineHeight: "1rem",
-  color: "#1B1C17",
-  border: "none",
-  borderLeft: "1px solid #2F736E1F",
-};
+import {
+  DEFAULT_ROW_COLORS,
+  DEFAULT_TABLE_HEADER_STYLES,
+  DEFAULT_TABLE_CELL_STYLES,
+} from "./constants";
+import {
+  checkCellValueType,
+  formatCurrency,
+  getCellValueAllignment,
+  isAllRowsExpanded,
+} from "./utils";
+import { GenericTableProps, Row, RowAction } from "./types";
 
 function GenericTable<T>({
   data,
@@ -91,7 +44,7 @@ function GenericTable<T>({
   }>({ index: -1, dynamicRows: null });
 
   useEffect(() => {
-    const allExpanded = isAllRowsExpanded(data);
+    const allExpanded = isAllRowsExpanded(data, expandedRows);
     setAllExpanded(allExpanded);
   }, [expandedRows, data]);
 
@@ -175,54 +128,6 @@ function GenericTable<T>({
     }
   };
 
-  const isAllRowsExpanded = (rows: Row<T>[]): boolean => {
-    for (const row of rows) {
-      if (row.children) {
-        if (!expandedRows[row.id] || !isAllRowsExpanded(row.children))
-          return false;
-      }
-    }
-    return true;
-  };
-
-  const formatCurrency = (value: any) => {
-    const formattedValue = Math.abs(Number(value)).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-    return value < 0 ? `- $${formattedValue}` : `$${formattedValue}`;
-  };
-
-  const checkCellValueType = (type: string, value: any) => {
-    switch (type) {
-      case "string":
-        return value;
-      case "percentage":
-        return Number(value) === 0
-          ? "-"
-          : `${(Number(value) * 100).toFixed(2)}%`;
-      case "currency":
-        return Number(value) === 0 ? "-" : formatCurrency(value);
-      case "date":
-        return value;
-      default:
-        return null;
-    }
-  };
-
-  const getCellValueAllignment = (type: string) => {
-    switch (type) {
-      case "percentage":
-      case "currency":
-        return "right";
-      case "string":
-      case "date":
-        return "left";
-      default:
-        return "center";
-    }
-  };
-
   const renderCellContent = (row: any, key: any): ReactNode => {
     const value = row[key];
     const columnType = columnMetadata[key]?.type;
@@ -234,7 +139,6 @@ function GenericTable<T>({
       let renderValue = checkCellValueType(columnType, value);
       const pivotColumnType = meta?.columns?.[2]?.type;
 
-      // Handle pivot table columns where type needs to be inferred from metadata
       if (!renderValue && meta.chartType === "PIVOT_TABLE") {
         if (pivotColumnType) {
           renderValue = checkCellValueType(pivotColumnType, value);
@@ -250,7 +154,6 @@ function GenericTable<T>({
           if (
             icon.type === "conditional" &&
             icon.condition &&
-            // eslint-disable-next-line no-new-func
             new Function("row", `return ${icon.condition};`)(row)
           ) {
             if (icon.position === "left") {
