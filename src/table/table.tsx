@@ -41,9 +41,33 @@ export type GenericTableProps<T> = {
   isLoading?: boolean;
   depth?: number | null;
   showTotal?: boolean;
+  tableHeaderStyles?: React.CSSProperties;
+  tableCellStyles?: React.CSSProperties;
+  rowColors?: [string, string];
 };
 
-const ROW_COLORS = ["#D8DBDD", "#F0F0F1"];
+const DEFAULT_ROW_COLORS: [string, string] = ["#D8DBDD", "#F0F0F1"];
+
+const DEFAULT_TABLE_HEADER_STYLES: React.CSSProperties = {
+  padding: "0.75rem 0.5rem",
+  fontSize: "0.75rem",
+  fontWeight: 700,
+  lineHeight: "1rem",
+  color: "#F6F8F9",
+  borderLeft: "1px solid #737F86",
+  borderBottom: "none",
+  background: "#2F736E",
+};
+
+const DEFAULT_TABLE_CELL_STYLES: React.CSSProperties = {
+  padding: "0.75rem 0.5rem",
+  fontSize: "0.875rem",
+  fontWeight: 500,
+  lineHeight: "1rem",
+  color: "#1B1C17",
+  border: "none",
+  borderLeft: "1px solid #2F736E1F",
+};
 
 function GenericTable<T>({
   data,
@@ -54,6 +78,9 @@ function GenericTable<T>({
   isLoading,
   depth,
   showTotal = false,
+  tableHeaderStyles,
+  tableCellStyles,
+  rowColors = DEFAULT_ROW_COLORS,
 }: GenericTableProps<T>) {
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [allExpanded, setAllExpanded] = useState(false);
@@ -299,7 +326,7 @@ function GenericTable<T>({
     if (depth && depth === index) {
       return "#FFFFFF";
     } else {
-      return ROW_COLORS[index % 2 ? 0 : 1];
+      return rowColors[index % 2 ? 0 : 1];
     }
   };
 
@@ -314,13 +341,8 @@ function GenericTable<T>({
             <TableCell
               key={String(column.key)}
               sx={{
-                paddingY: "0.75rem",
-                paddingLeft: "0.5rem",
-                fontSize: "0.875rem",
-                fontWeight: 500,
-                lineHeight: "1rem",
-                color: "#1B1C17",
-                border: "1px solid #2F736E1F",
+                ...DEFAULT_TABLE_CELL_STYLES,
+                ...tableCellStyles,
                 borderLeft: colindex === 0 ? "1px solid #2F736E1F" : "none",
                 borderRight: "1px solid #2F736E1F",
                 background: "#FFFFFF",
@@ -383,12 +405,8 @@ function GenericTable<T>({
                 <TableCell
                   key={String(column.key)}
                   sx={{
-                    paddingY: "0.75rem",
-                    paddingLeft: "0.5rem",
-                    fontSize: "0.875rem",
-                    fontWeight: 700,
-                    lineHeight: "1rem",
-                    color: "#1B1C17",
+                    ...DEFAULT_TABLE_CELL_STYLES,
+                    ...tableCellStyles,
                     border: "none",
                     borderLeft: "1px solid #2F736E1F",
                     background: "#2F736E1F",
@@ -403,6 +421,8 @@ function GenericTable<T>({
                 <TableCell
                   key={String(`${row.id}_${rowIndex}_actions`)}
                   sx={{
+                    ...DEFAULT_TABLE_CELL_STYLES,
+                    ...tableCellStyles,
                     paddingY: "0.75rem",
                     border: "none",
                     borderLeft: "1px solid #2F736E1F",
@@ -506,16 +526,8 @@ function GenericTable<T>({
               <TableCell
                 key={String(column.key)}
                 sx={{
-                  paddingY: "0.75rem",
-                  paddingLeft: "0.5rem",
-                  fontSize: "0.875rem",
-                  fontWeight:
-                    rowIndex === rows.length - 1 && showTotal ? 700 : 500,
-                  lineHeight: "1rem",
-                  color:
-                    rowIndex === rows.length - 1 && showTotal
-                      ? "#2F736E"
-                      : "#1B1C17",
+                  ...DEFAULT_TABLE_CELL_STYLES,
+                  ...tableCellStyles,
                   border: "none",
                   borderLeft:
                     colindex === 0 || level === depth
@@ -539,6 +551,8 @@ function GenericTable<T>({
               <TableCell
                 key={String(`${row.id}_${rowIndex}_actions`)}
                 sx={{
+                  ...DEFAULT_TABLE_CELL_STYLES,
+                  ...tableCellStyles,
                   paddingY: "0.75rem",
                   paddingLeft: "0.5rem",
                   fontSize: "0.875rem",
@@ -650,7 +664,15 @@ function GenericTable<T>({
           }}
         >
           <TableHead>
-            <TableRow sx={{ borderRadius: "20px" }}>
+            <TableRow
+              sx={{
+                borderRadius: "20px",
+                "& .MuiTableCell-root": {
+                  ...DEFAULT_TABLE_HEADER_STYLES,
+                  ...tableHeaderStyles,
+                },
+              }}
+            >
               {meta.chartType === "MULTI_LEVEL_TABLE" && (
                 <TableCell
                   sx={{
@@ -689,15 +711,6 @@ function GenericTable<T>({
                 <TableCell
                   key={String(column.key)}
                   sx={{
-                    paddingY: "0.75rem",
-                    paddingLeft: "0.5rem",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    lineHeight: "1rem",
-                    color: "#F6F8F9",
-                    borderLeft: "1px solid #737F86",
-                    borderBottom: "none",
-                    background: "#2F736E",
                     borderTopRightRadius:
                       i === columns.length - 1 && !isShowActionColumn
                         ? "8px"
@@ -727,15 +740,6 @@ function GenericTable<T>({
               {isShowActionColumn && (
                 <TableCell
                   sx={{
-                    paddingY: "0.75rem",
-                    paddingLeft: "0.5rem",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    lineHeight: "1rem",
-                    color: "#F6F8F9",
-                    borderLeft: "1px solid #737F86",
-                    borderBottom: "none",
-                    background: "#2F736E",
                     borderTopRightRadius: "8px",
                     borderBottomRightRadius: "8px",
                     textAlign: "center",
