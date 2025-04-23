@@ -1,6 +1,6 @@
 import { CSSProperties } from 'react';
 
-export const DEFAULT_ROW_COLORS: [string, string] = ["#D8DBDD", "#F0F0F1"];
+export const DEFAULT_ROW_COLORS = ['#FFFFFF', '#F0F0F1'];
 
 export const DEFAULT_TABLE_HEADER_STYLES: CSSProperties = {
   padding: "0.75rem 0.5rem",
@@ -22,3 +22,26 @@ export const DEFAULT_TABLE_CELL_STYLES: CSSProperties = {
   border: "none",
   borderLeft: "1px solid #2F736E1F",
 }; 
+
+export const TABLE_TYPES = {
+  MULTI_LEVEL: 'MULTI_LEVEL_TABLE',
+  PIVOT: 'PIVOT_TABLE',
+};
+
+export const ICON_POSITIONS = {
+  LEFT: 'left',
+  RIGHT: 'right',
+};
+
+export const ACTION_TYPES = {
+  CONDITIONAL: 'conditional',
+};
+
+export const CELL_VALUE_TYPES = {
+  PERCENTAGE: 'percentage',
+  STRING: 'string',
+  CURRENCY: 'currency',
+  DATE: 'date',
+};
+
+export type CellValueType = typeof CELL_VALUE_TYPES[keyof typeof CELL_VALUE_TYPES]; 

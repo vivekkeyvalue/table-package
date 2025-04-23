@@ -11,7 +11,7 @@ export default {
     },
   } as ComponentMeta<typeof Component>;
 
-  const Template: ComponentStory<typeof Component> = () => <Component />;
+  const Template: ComponentStory<typeof Component> = () => <Component data={[]} columns={[]} meta={undefined} />;
 
 export const ComponentExample = Template.bind({});
 ComponentExample.args = {

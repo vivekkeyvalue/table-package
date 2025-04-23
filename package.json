@@ -1,7 +1,7 @@
 {
-  "name": "@vivekthebassist/table",
+  "name": "material-table-component",
   "version": "0.1.7",
-  "description": "Typescript Boilerplate code",
+  "description": "A flexible and customizable table component built with React and Material-UI",
   "main": "build/index.js",
   "module": "build/index.js",
   "types": "build/types/lib/index.d.ts",
@@ -22,7 +22,8 @@
     "coverage": "npm run test -- --coverage",
     "trypublish": "npm publish || true",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "prepublishOnly": "npm run build"
   },
   "engines": {
     "node": ">=10"
@@ -31,6 +32,14 @@
     "type": "git",
     "url": "git+https://github.com/vivekkeyvalue/table-package.git"
   },
+  "keywords": [
+    "react",
+    "table",
+    "material-ui",
+    "typescript",
+    "component",
+    "data-grid"
+  ],
   "author": "Keyvalue",
   "license": "MIT",
   "devDependencies": {
@@ -53,6 +62,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^29.4.0",
+    "@types/react": "^18.2.0",
     "@typescript-eslint/eslint-plugin": "5.52.0",
     "@typescript-eslint/parser": "5.52.0",
     "babel-eslint": "^10.1.0",
