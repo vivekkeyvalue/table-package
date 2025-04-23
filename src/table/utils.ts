@@ -1,4 +1,5 @@
 import { Row } from "./types";
+import { CELL_VALUE_TYPES, CellValueType } from './constants';
 
 export const formatCurrency = (value: any) => {
   const formattedValue = Math.abs(Number(value)).toLocaleString("en-US", {
@@ -10,40 +11,37 @@ export const formatCurrency = (value: any) => {
 
 export const checkCellValueType = (type: string, value: any) => {
   switch (type) {
-    case "string":
+    case CELL_VALUE_TYPES.STRING:
+    case CELL_VALUE_TYPES.DATE:
       return value;
-    case "percentage":
+    case CELL_VALUE_TYPES.PERCENTAGE:
       return Number(value) === 0
         ? "-"
         : `${(Number(value) * 100).toFixed(2)}%`;
-    case "currency":
+    case CELL_VALUE_TYPES.CURRENCY:
       return Number(value) === 0 ? "-" : formatCurrency(value);
-    case "date":
-      return value;
     default:
       return null;
   }
 };
 
-export const getCellValueAllignment = (type: string) => {
+export const getCellValueAllignment = (type: CellValueType | undefined): 'left' | 'center' | 'right' => {
   switch (type) {
-    case "percentage":
-    case "currency":
-      return "right";
-    case "string":
-    case "date":
-      return "left";
+    case CELL_VALUE_TYPES.PERCENTAGE:
+    case CELL_VALUE_TYPES.CURRENCY:
+      return 'right';
+    case CELL_VALUE_TYPES.STRING:
+    case CELL_VALUE_TYPES.DATE:
+      return 'left';
     default:
-      return "center";
+      return 'center';
   }
 };
 
-export const isAllRowsExpanded = (rows: Row<any>[], expandedRows: Record<string, boolean>): boolean => {
+export const isAllRowsExpanded = <T>(rows: Row<T>[], expandedRows: Record<string, boolean>): boolean => {
   for (const row of rows) {
-    if (row.children) {
-      if (!expandedRows[row.id] || !isAllRowsExpanded(row.children, expandedRows))
+      if (row.children && (!expandedRows[row.id] || !isAllRowsExpanded(row.children, expandedRows)))
         return false;
     }
-  }
   return true;
-}; 
+};
